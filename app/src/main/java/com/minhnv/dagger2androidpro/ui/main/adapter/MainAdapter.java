@@ -18,10 +18,16 @@ import java.util.List;
 public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     private List<HomeStay> homeStays;
     private Context context;
+    private onClick onClick;
 
-    public MainAdapter(List<HomeStay> homeStays, Context context) {
+    public MainAdapter(List<HomeStay> homeStays, Context context,onClick onClick) {
         this.homeStays = homeStays;
         this.context = context;
+        this.onClick = onClick;
+    }
+
+    public interface onClick{
+        void onClick(int position);
     }
 
     @NonNull
@@ -33,6 +39,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.bind(homeStays.get(position));
+        holder.imgPicture.setOnClickListener(view -> onClick.onClick(position));
     }
 
     @Override

@@ -13,6 +13,7 @@ import com.minhnv.dagger2androidpro.R;
 import com.minhnv.dagger2androidpro.data.model.HomeStay;
 import com.minhnv.dagger2androidpro.ui.base.BaseActivity;
 import com.minhnv.dagger2androidpro.ui.main.adapter.MainAdapter;
+import com.minhnv.dagger2androidpro.ui.main.demo_fragment.BlankFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +39,9 @@ public class MainActivity extends BaseActivity<MainViewModel> implements MainNav
         //call back
         viewmodel.ServerLoad();
         homeStays = new ArrayList<>();
-        adapter = new MainAdapter(homeStays,getApplicationContext());
+        adapter = new MainAdapter(homeStays, getApplicationContext(), position -> {
+            pushTo(BlankFragment.newInstance(),"S");
+        });
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);

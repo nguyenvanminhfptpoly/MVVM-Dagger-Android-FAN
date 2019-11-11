@@ -10,7 +10,9 @@ import android.view.inputmethod.InputMethodManager;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
+import com.minhnv.dagger2androidpro.R;
 import com.minhnv.dagger2androidpro.ViewModelProviderFactory;
 import com.minhnv.dagger2androidpro.utils.CommonUtils;
 import com.minhnv.dagger2androidpro.utils.rx.ScheduleProvider;
@@ -18,9 +20,10 @@ import com.minhnv.dagger2androidpro.utils.rx.ScheduleProvider;
 import javax.inject.Inject;
 
 import dagger.android.AndroidInjection;
+import dagger.android.support.DaggerAppCompatActivity;
 import io.reactivex.disposables.CompositeDisposable;
 
-public abstract class BaseActivity<V extends BaseViewModel> extends AppCompatActivity  {
+public abstract class BaseActivity<V extends BaseViewModel> extends DaggerAppCompatActivity {
     @Inject
     public ViewModelProviderFactory factory;
     @Inject
@@ -75,6 +78,14 @@ public abstract class BaseActivity<V extends BaseViewModel> extends AppCompatAct
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
             }
         }
+    }
+
+    public void pushTo(Fragment fragment,String TAG){
+        getSupportFragmentManager()
+                .beginTransaction()
+                .disallowAddToBackStack()
+                .add(R.id.clRootView, fragment, TAG)
+                .commit();
     }
 
 }
