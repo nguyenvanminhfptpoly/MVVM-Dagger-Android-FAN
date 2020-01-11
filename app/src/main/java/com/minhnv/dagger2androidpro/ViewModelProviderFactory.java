@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.minhnv.dagger2androidpro.data.DataManager;
 import com.minhnv.dagger2androidpro.ui.main.MainViewModel;
+import com.minhnv.dagger2androidpro.ui.main.add.AddHsViewModel;
 import com.minhnv.dagger2androidpro.ui.main.demo_fragment.BlankFragment;
 import com.minhnv.dagger2androidpro.ui.main.demo_fragment.BlankViewModel;
 import com.minhnv.dagger2androidpro.utils.rx.ScheduleProvider;
@@ -31,6 +32,8 @@ public class ViewModelProviderFactory extends ViewModelProvider.NewInstanceFacto
             return (T) new MainViewModel(dataManager,scheduleProvider);
         }else if(modelClass.isAssignableFrom(BlankViewModel.class)){
             return (T) new BlankViewModel(dataManager,scheduleProvider);
+        } else  if(modelClass.isAssignableFrom(AddHsViewModel.class)){
+            return (T) new AddHsViewModel(dataManager,scheduleProvider);
         }
         throw new IllegalArgumentException("Unknown ViewModel class: " + modelClass.getName());
     }

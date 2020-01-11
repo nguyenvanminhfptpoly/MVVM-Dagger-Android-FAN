@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.minhnv.dagger2androidpro.data.DataManager;
 import com.minhnv.dagger2androidpro.data.model.HomeStay;
+import com.minhnv.dagger2androidpro.data.model.HomestayRequest;
 import com.minhnv.dagger2androidpro.ui.base.BaseViewModel;
 import com.minhnv.dagger2androidpro.utils.rx.ScheduleProvider;
 
@@ -32,6 +33,23 @@ public class MainViewModel extends BaseViewModel<MainNavigator> {
                 },throwable -> {
                     getNavigator().onError(throwable);
                     Log.d(TAG, "loadList: "+throwable);
+                })
+        );
+    }
+
+    public void delete(int id){
+        getCompositeDisposable().add(
+                getDataManager().doDeleteHomestay(new HomestayRequest.ServerDeleteHomeStays(id))
+                .subscribeOn(getSchedulerProvider().io())
+                .observeOn(getSchedulerProvider().ui())
+                .subscribe( response -> {
+                    if(response.equals("success")){
+                        getNavigator().onDeleteSuccess();
+                    }else if(response.equals("eror")){
+                        getNavigator().onDeleteFailed();
+                    }
+                }, throwable -> {
+                    getNavigator().onError(throwable);
                 })
         );
     }

@@ -80,12 +80,6 @@ public abstract class BaseActivity<V extends BaseViewModel> extends DaggerAppCom
         }
     }
 
-    public void pushTo(Fragment fragment,String TAG){
-        getSupportFragmentManager()
-                .beginTransaction()
-                .disallowAddToBackStack()
-                .add(R.id.clRootView, fragment, TAG)
-                .commit();
-    }
+
 
 }

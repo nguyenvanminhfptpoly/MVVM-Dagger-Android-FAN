@@ -1,6 +1,7 @@
 package com.minhnv.dagger2androidpro.data.remote;
 
 import com.minhnv.dagger2androidpro.data.model.HomeStay;
+import com.minhnv.dagger2androidpro.data.model.HomestayRequest;
 import com.rx2androidnetworking.Rx2AndroidNetworking;
 
 import java.util.List;
@@ -24,4 +25,14 @@ public class AppApiHelper implements ApiHelper {
                 .build()
                 .getObjectListObservable(HomeStay.class);
     }
+
+    @Override
+    public Observable<String> doDeleteHomestay(HomestayRequest.ServerDeleteHomeStays id) {
+        return Rx2AndroidNetworking.post(ApiEndPoint.ENDPOINT_DELETE_HOMESTAYS)
+                .addBodyParameter(id)
+                .build()
+                .getStringObservable();
+    }
+
+
 }

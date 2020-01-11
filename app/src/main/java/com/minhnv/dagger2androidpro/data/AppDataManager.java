@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.google.gson.Gson;
 import com.minhnv.dagger2androidpro.data.model.HomeStay;
+import com.minhnv.dagger2androidpro.data.model.HomestayRequest;
 import com.minhnv.dagger2androidpro.data.remote.ApiHelper;
 
 import java.util.List;
@@ -29,5 +30,10 @@ public class AppDataManager implements DataManager {
     @Override
     public Observable<List<HomeStay>> doLoadHomeStay() {
         return apiHelper.doLoadHomeStay();
+    }
+
+    @Override
+    public Observable<String> doDeleteHomestay(HomestayRequest.ServerDeleteHomeStays id) {
+        return apiHelper.doDeleteHomestay(id);
     }
 }

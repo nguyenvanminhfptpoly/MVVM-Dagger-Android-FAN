@@ -4,4 +4,6 @@ public interface MainNavigator {
     void onError(Throwable throwable);
     void onSuccess();
     void ServerLoadList();
+    void onDeleteSuccess();
+    void onDeleteFailed();
 }

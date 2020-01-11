@@ -2,6 +2,7 @@ package com.minhnv.dagger2androidpro.di.builder;
 
 import com.minhnv.dagger2androidpro.di.builder.main.MainFragmentBuilder;
 import com.minhnv.dagger2androidpro.ui.main.MainActivity;
+import com.minhnv.dagger2androidpro.ui.main.add.AddHsActivity;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -12,4 +13,7 @@ public abstract class ActivityBuilder {
             modules = MainFragmentBuilder.class
     )
     abstract MainActivity mainActivity();
+
+    @ContributesAndroidInjector
+    abstract AddHsActivity addHsActivity();
 }

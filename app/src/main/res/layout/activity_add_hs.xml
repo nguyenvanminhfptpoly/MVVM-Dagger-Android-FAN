@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.main.add.AddHsActivity">
+
+    <EditText
+        android:id="@+id/edName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="tên hs"
+        android:inputType="textPersonName"
+        app:layout_constraintStart_toStartOf="@+id/imgHomestay"
+        app:layout_constraintTop_toBottomOf="@+id/imgHomestay" />
+
+    <ImageView
+        android:id="@+id/imgHomestay"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:src="@mipmap/ic_launcher"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/edAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="địa chỉ"
+        android:inputType="textPersonName"
+        app:layout_constraintStart_toStartOf="@+id/edName"
+        app:layout_constraintTop_toBottomOf="@+id/edName" />
+
+    <EditText
+        android:id="@+id/edRating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="Đánh giá"
+        android:inputType="number"
+        app:layout_constraintStart_toStartOf="@+id/edAddress"
+        app:layout_constraintTop_toBottomOf="@+id/edAddress" />
+
+    <EditText
+        android:id="@+id/edPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="giá homestay"
+        android:inputType="number"
+        app:layout_constraintStart_toStartOf="@+id/edRating"
+        app:layout_constraintTop_toBottomOf="@+id/edRating" />
+
+    <EditText
+        android:id="@+id/edIdHomestay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="idHomestay"
+        android:inputType="number"
+        app:layout_constraintStart_toStartOf="@+id/edPrice"
+        app:layout_constraintTop_toBottomOf="@+id/edPrice" />
+
+    <EditText
+        android:id="@+id/edHastag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="Hastag"
+        android:inputType="textPersonName"
+        app:layout_constraintStart_toStartOf="@+id/edIdHomestay"
+        app:layout_constraintTop_toBottomOf="@+id/edIdHomestay" />
+
+    <EditText
+        android:id="@+id/edPriceAgo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="Giá cũ"
+        android:inputType="number"
+        app:layout_constraintStart_toStartOf="@+id/edHastag"
+        app:layout_constraintTop_toBottomOf="@+id/edHastag" />
+
+    <Button
+        android:id="@+id/btnAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="thêm"
+        app:layout_constraintStart_toStartOf="@+id/edPriceAgo"
+        app:layout_constraintTop_toBottomOf="@+id/edPriceAgo" />
+</androidx.constraintlayout.widget.ConstraintLayout>
