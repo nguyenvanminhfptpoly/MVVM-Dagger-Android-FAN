@@ -20,16 +20,16 @@
     <ImageView
         android:id="@+id/imgHomestay"
         android:layout_width="wrap_content"
-        android:layout_height="100dp"
+        android:layout_height="150dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
-        android:src="@mipmap/ic_launcher"
+        android:background="@mipmap/ic_launcher"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/edAddress"
+        android:id="@+id/edTitles"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -40,26 +40,26 @@
         app:layout_constraintTop_toBottomOf="@+id/edName" />
 
     <EditText
-        android:id="@+id/edRating"
+        android:id="@+id/edRatings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:ems="10"
         android:hint="Đánh giá"
         android:inputType="number"
-        app:layout_constraintStart_toStartOf="@+id/edAddress"
-        app:layout_constraintTop_toBottomOf="@+id/edAddress" />
+        app:layout_constraintStart_toStartOf="@+id/edTitles"
+        app:layout_constraintTop_toBottomOf="@+id/edTitles" />
 
     <EditText
-        android:id="@+id/edPrice"
+        android:id="@+id/edPrices"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:ems="10"
         android:hint="giá homestay"
         android:inputType="number"
-        app:layout_constraintStart_toStartOf="@+id/edRating"
-        app:layout_constraintTop_toBottomOf="@+id/edRating" />
+        app:layout_constraintStart_toStartOf="@+id/edRatings"
+        app:layout_constraintTop_toBottomOf="@+id/edRatings" />
 
     <EditText
         android:id="@+id/edIdHomestay"
@@ -69,8 +69,8 @@
         android:ems="10"
         android:hint="idHomestay"
         android:inputType="number"
-        app:layout_constraintStart_toStartOf="@+id/edPrice"
-        app:layout_constraintTop_toBottomOf="@+id/edPrice" />
+        app:layout_constraintStart_toStartOf="@+id/edPrices"
+        app:layout_constraintTop_toBottomOf="@+id/edPrices" />
 
     <EditText
         android:id="@+id/edHastag"
@@ -102,4 +102,5 @@
         android:text="thêm"
         app:layout_constraintStart_toStartOf="@+id/edPriceAgo"
         app:layout_constraintTop_toBottomOf="@+id/edPriceAgo" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

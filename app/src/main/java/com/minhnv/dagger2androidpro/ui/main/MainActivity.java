@@ -1,11 +1,16 @@
 package com.minhnv.dagger2androidpro.ui.main;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -16,6 +21,7 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.minhnv.dagger2androidpro.R;
@@ -23,6 +29,7 @@ import com.minhnv.dagger2androidpro.data.model.HomeStay;
 import com.minhnv.dagger2androidpro.ui.base.BaseActivity;
 import com.minhnv.dagger2androidpro.ui.main.adapter.MainAdapter;
 import com.minhnv.dagger2androidpro.ui.main.add.AddHsActivity;
+import com.minhnv.dagger2androidpro.ui.main.edit.EditActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,19 +49,16 @@ public class MainActivity extends BaseActivity<MainViewModel> implements MainNav
     private static final String[] REQUIRED_SDK_PERMISSIONS = new String[]{
             Manifest.permission.WRITE_EXTERNAL_STORAGE};
     private FloatingActionButton floatingActionButton;
+    private SwipeRefreshLayout swipe;
 
 
     @Override
-    public int getLayoutId() {
-        return R.layout.activity_main;
-    }
-
-    @Override
-    public void onCreateActivity(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
         viewmodel = ViewModelProviders.of(this, factory).get(MainViewModel.class);
         viewmodel.setNavigator(this);
         initView();
-
     }
 
     private void initView() {
@@ -63,23 +67,32 @@ public class MainActivity extends BaseActivity<MainViewModel> implements MainNav
         viewmodel.ServerLoad();
         homeStays = new ArrayList<>();
         adapter = new MainAdapter(homeStays, getApplicationContext(), position -> {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Xóa homstay này? ");
-            builder.setMessage("Bạn có muốn xóa không?");
-            builder.setCancelable(false);
-            HomeStay favorite = homeStays.get(position);
-            Integer id = Integer.valueOf(favorite.getId());
-            builder.setPositiveButton("Đồng ý", (dialogInterface, i) -> {
-                homeStays.clear();
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+            @SuppressLint("InflateParams") View view = getLayoutInflater().inflate(R.layout.dialog_edit_hs, null);
+            Button btnEdit = view.findViewById(R.id.btnEdits);
+            Button btnDelete = view.findViewById(R.id.btnDelete);
+            ImageButton imgCancel = view.findViewById(R.id.imageButton);
+            builder.setView(view);
+            Dialog dialog = builder.create();
+            dialog.show();
+            HomeStay homeStay = homeStays.get(position);
+            int id = Integer.parseInt(homeStay.getId());
+            btnDelete.setOnClickListener(v -> {
                 viewmodel.delete(id);
-                viewmodel.ServerLoad();
-
+                homeStays.clear();
+                viewmodel.loadList();
                 showLoading();
-                dialogInterface.dismiss();
+                dialog.dismiss();
             });
-            builder.setNegativeButton("Không", (dialogInterface, i) -> dialogInterface.dismiss());
-            AlertDialog alertDialog = builder.create();
-            alertDialog.show();
+            btnEdit.setOnClickListener(v -> {
+                Intent intent = new Intent(this, EditActivity.class);
+                intent.putExtra("detail", homeStays.get(position));
+                startActivity(intent);
+                dialog.dismiss();
+            });
+            imgCancel.setOnClickListener(v -> {
+                dialog.dismiss();
+            });
         });
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -87,6 +100,16 @@ public class MainActivity extends BaseActivity<MainViewModel> implements MainNav
         checkPermissions();
         floatingActionButton = (FloatingActionButton) findViewById(R.id.floatingActionButton);
         floatingActionButton.setOnClickListener(this);
+        swipe = (SwipeRefreshLayout) findViewById(R.id.swipe);
+        swipe.setOnClickListener(this);
+        swipe.setOnRefreshListener(() -> {
+            homeStays.clear();
+            viewmodel.loadList();
+            new Handler().postDelayed(() -> {
+                // Stop animation (This will be after 3 seconds)
+                swipe.setRefreshing(false);
+            }, 1500);
+        });
     }
 
     @Override
@@ -168,7 +191,6 @@ public class MainActivity extends BaseActivity<MainViewModel> implements MainNav
     }
 
 
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -177,6 +199,10 @@ public class MainActivity extends BaseActivity<MainViewModel> implements MainNav
             case R.id.floatingActionButton:
                 startActivity(new Intent(this, AddHsActivity.class));
                 break;
+            case R.id.swipe:
+                break;
         }
     }
+
+
 }

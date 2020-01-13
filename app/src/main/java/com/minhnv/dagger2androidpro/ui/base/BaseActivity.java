@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import androidx.annotation.IdRes;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,18 +42,12 @@ public abstract class BaseActivity<V extends BaseViewModel> extends DaggerAppCom
     private ProgressDialog progressDialog;
     public long mLastClickTime = 0;
 
-    public abstract @LayoutRes
-    int getLayoutId();
-
-    public abstract void onCreateActivity(@Nullable Bundle savedInstanceState);
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         performDependencyInjection();
         super.onCreate(savedInstanceState);
         compositeDisposable = new CompositeDisposable();
-        setContentView(getLayoutId());
-        onCreateActivity(savedInstanceState);
     }
 
 
@@ -79,6 +74,7 @@ public abstract class BaseActivity<V extends BaseViewModel> extends DaggerAppCom
             }
         }
     }
+
 
 
 

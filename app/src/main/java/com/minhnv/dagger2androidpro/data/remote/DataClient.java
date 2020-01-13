@@ -25,6 +25,18 @@ public interface DataClient {
                             @Field("priceago") String priceago);
 
     @FormUrlEncoded
+    @POST("updateHomestayRating.php")
+    Call<String> editData(@Field("id") String id,
+                            @Field("title") String title,
+                            @Field("image") String image,
+                            @Field("address") String address,
+                            @Field("rating") String rating,
+                            @Field("price") String price,
+                            @Field("idhomestays") String idhomestay,
+                            @Field("hastag") String hastag,
+                            @Field("priceago") String priceago);
+
+    @FormUrlEncoded
     @POST("storypost.php")
     Call<String> postStory(@Field("title") String title,
                            @Field("image") String image);

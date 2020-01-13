@@ -1,4 +1,4 @@
-package com.minhnv.dagger2androidpro.ui.main.add;
+package com.minhnv.dagger2androidpro.ui.main.edit;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -11,12 +11,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.androidnetworking.widget.ANImageView;
 import com.minhnv.dagger2androidpro.R;
@@ -38,74 +36,93 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AddHsActivity extends BaseActivity<AddHsViewModel> implements AddHsNavigator, View.OnClickListener {
+public class EditActivity extends BaseActivity<EditViewModel> implements EditNavigator, View.OnClickListener {
 
+    private ANImageView imgHomes;
+    /**
+     * TextView
+     */
+    private TextView tvIdhs;
     /**
      * tên hs
      */
-    private EditText edName;
-    private ImageView imgHomestay;
+    private EditText edTitles;
     /**
      * địa chỉ
      */
-    private EditText edAddress;
+    private EditText edAddresss;
     /**
-     * Đánh giá
+     * đánh giá
      */
-    private EditText edRating;
+    private EditText edRatings;
     /**
-     * giá homestay
+     * Name
      */
-    private EditText edPrice;
+    private EditText edPrices;
     /**
-     * idHomestay
+     * Name
      */
-    private EditText edIdHomestay;
+    private EditText edIdHs;
     /**
-     * Hastag
+     * Name
      */
-    private EditText edHastag;
+    private EditText edHastags;
     /**
-     * Giá cũ
+     * Name
      */
-    private EditText edPriceAgo;
+    private EditText edPriceAgos;
     /**
-     * thêm
+     * Sửa
      */
-    private Button btnAdd;
+    private Button btnEdits;
     private int Image = 123;
     String realPath = "";
-    private TextView id;
-
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_hs);
-        viewmodel = ViewModelProviders.of(this, factory).get(AddHsViewModel.class);
-        viewmodel.setNavigator(this);
+        setContentView(R.layout.activity_edit);
         initView();
-
     }
 
-    public void initView() {
-        edName = (EditText) findViewById(R.id.edName);
-        imgHomestay = findViewById(R.id.imgHomestay);
-        edAddress = (EditText) findViewById(R.id.edTitles);
-        edRating = (EditText) findViewById(R.id.edRatings);
-        edPrice = (EditText) findViewById(R.id.edPrices);
-        edIdHomestay = (EditText) findViewById(R.id.edIdHomestay);
-        edHastag = (EditText) findViewById(R.id.edHastag);
-        edPriceAgo = (EditText) findViewById(R.id.edPriceAgo);
-        btnAdd = (Button) findViewById(R.id.btnAdd);
-        btnAdd.setOnClickListener(this);
+    private void initView() {
+        imgHomes = (ANImageView) findViewById(R.id.imgHomes);
+        tvIdhs = (TextView) findViewById(R.id.tvIdhs);
+        edTitles = (EditText) findViewById(R.id.edTitles);
+        edAddresss = (EditText) findViewById(R.id.edAddresss);
+        edRatings = (EditText) findViewById(R.id.edRatings);
+        edPrices = (EditText) findViewById(R.id.edPrices);
+        edIdHs = (EditText) findViewById(R.id.edIdHs);
+        edHastags = (EditText) findViewById(R.id.edHastags);
+        edPriceAgos = (EditText) findViewById(R.id.edPriceAgos);
+        btnEdits = (Button) findViewById(R.id.btnEdits);
+        btnEdits.setOnClickListener(this);
+        initIntent();
+    }
 
-        imgHomestay.setOnClickListener(v -> {
+    private void initIntent(){
+        HomeStay homeStay = (HomeStay) getIntent().getSerializableExtra("detail");
+        assert homeStay != null;
+        imgHomes.setImageUrl(homeStay.getImage());
+        edAddresss.setText(homeStay.getAddress());
+        edHastags.setText(homeStay.getHastag());
+        edIdHs.setText(homeStay.getIdhomestays());
+        edTitles.setText(homeStay.getTitle());
+        edPrices.setText(homeStay.getPrice() + "");
+        edPriceAgos.setText(homeStay.getPriceago() + "");
+        edRatings.setText(homeStay.getRating());
+        btnEdits.setOnClickListener(v -> {
+            showLoading();
+            editHomestay();});
+        tvIdhs.setText(homeStay.getId());
+
+        imgHomes.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_PICK);
             intent.setType("image/*");
             startActivityForResult(intent, Image);
         });
 
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -115,7 +132,7 @@ public class AddHsActivity extends BaseActivity<AddHsViewModel> implements AddHs
             try {
                 InputStream inputStream = getContentResolver().openInputStream(uri);
                 Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                imgHomestay.setImageBitmap(bitmap);
+                imgHomes.setImageBitmap(bitmap);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -136,17 +153,18 @@ public class AddHsActivity extends BaseActivity<AddHsViewModel> implements AddHs
         return path;
     }
 
-    private void postLuxury() {
-        String title = edName.getText().toString().trim();
-        String address = edAddress.getText().toString().trim();
-        String rating = edRating.getText().toString().trim();
-        String price = edPrice.getText().toString().trim();
-        String idhomestay = edIdHomestay.getText().toString().trim();
-        String hastag = edHastag.getText().toString().trim();
-        String priceago = edPriceAgo.getText().toString().trim();
+    private void editHomestay() {
+        String title = edTitles.getText().toString().trim();
+        String idHs = tvIdhs.getText().toString().trim();
+        String address = edAddresss.getText().toString().trim();
+        String rating = edRatings.getText().toString().trim();
+        String price = edPrices.getText().toString().trim();
+        String idhomestay = edIdHs.getText().toString().trim();
+        String hastag = edHastags.getText().toString().trim();
+        String priceago = edPriceAgos.getText().toString().trim();
 
         File fileLuxury = new File(realPath);
-        if(title.isEmpty() || address.isEmpty() || rating.isEmpty() || price.isEmpty() || idhomestay.isEmpty() || hastag.isEmpty() || priceago.isEmpty() || fileLuxury.length() == 0) {
+        if(title.isEmpty() || address.isEmpty() || rating.isEmpty() || price.isEmpty() || idhomestay.isEmpty() || hastag.isEmpty() || priceago.isEmpty() ||fileLuxury.length() == 0) {
             hideLoading();
             Toast.makeText(this, "Nhập đủ dữ liệu", Toast.LENGTH_SHORT).show();
         }else {
@@ -166,7 +184,7 @@ public class AddHsActivity extends BaseActivity<AddHsViewModel> implements AddHs
                     assert body != null;
                     if (body.length() > 0) {
                         DataClient insertData = ApiUtils.getData();
-                        Call<String> callb = insertData.insertData(title, ApiUtils.baseUrl + "image/" + body, address, rating, price, idhomestay, hastag, priceago);
+                        Call<String> callb = insertData.editData(idHs,title, ApiUtils.baseUrl + "image/" + body, address, rating, price, idhomestay, hastag, priceago);
                         callb.enqueue(new Callback<String>() {
                             @Override
                             public void onResponse(@NotNull Call<String> call, @NotNull Response<String> response) {
@@ -174,10 +192,10 @@ public class AddHsActivity extends BaseActivity<AddHsViewModel> implements AddHs
                                 assert result != null;
                                 if (result.equals("Success")) {
                                     hideLoading();
-                                    Toast.makeText(getApplicationContext(),"Thêm thành công",Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getApplicationContext(),"Sửa thành công",Toast.LENGTH_LONG).show();
                                 }else if(result.equals("Failed")){
                                     hideLoading();
-                                    Toast.makeText(getApplicationContext(),"Thêm không thành công",Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getApplicationContext(),"Sửa không thành công",Toast.LENGTH_LONG).show();
                                 }
                             }
 
@@ -198,14 +216,13 @@ public class AddHsActivity extends BaseActivity<AddHsViewModel> implements AddHs
         }
     }
 
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             default:
                 break;
-            case R.id.btnAdd:
-                showLoading();
-                postLuxury();
+            case R.id.btnEdits:
                 break;
         }
     }

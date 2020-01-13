@@ -12,4 +12,5 @@ public interface ApiHelper {
     //subscribe observable reactive programing
     Observable<List<HomeStay>> doLoadHomeStay();
     Observable<String> doDeleteHomestay(HomestayRequest.ServerDeleteHomeStays id);
+
 }

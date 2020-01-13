@@ -6,5 +6,6 @@ public class ApiEndPoint {
     //api get list
     static final String ENDPOINT_LIST_HOMESTAYS = BASE_URL + "getlisthomestayprice.php";
     static final String ENDPOINT_DELETE_HOMESTAYS = BASE_URL + "deleteHomestay.php";
+    static final String ENDPOINT_EDIT_HOMESTAYS = BASE_URL + "updateHomestayRating.php";
 
 }
